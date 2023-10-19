@@ -1,0 +1,22 @@
+{
+  "contacts": [
+    {
+      "avatar": "https://i.pravatar.cc/300?img=1",
+      "firstname": "John",
+      "lastname": "Doe",
+      "twitterLink": "https://twitter.com/johndoe",
+      "note": "Contact note",
+      "isFavorite": true,
+      "id": 1
+    },
+    {
+      "avatar": "https://i.pravatar.cc/300?img=2",
+      "firstname": "Jane",
+      "lastname": "Smith",
+      "twitterLink": "https://twitter.com/janesmith",
+      "note": "Contact note",
+      "isFavorite": false,
+      "id": 2
+    }
+  ]
+}
