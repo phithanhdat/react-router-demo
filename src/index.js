@@ -17,6 +17,8 @@ import {loader as contactDetailLoader} from './pages/ContactDetail'
 import {saveContactAction} from './pages/NewContact'
 import NewContact from './pages/NewContact';
 import DeleteDone from './pages/DeleteDone';
+import EditContact, { saveEditedContactAction } from './pages/EditContact';
+import BootstrapLayoutDemo from './pages/BootstrapLayoutDemo';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,12 @@ const router = createBrowserRouter([
         path: 'contacts/:contactId',
         element: <ContactDetail />,
         loader: contactDetailLoader,
+      },
+      {
+        path: 'contacts/:contactId/edit',
+        element: <EditContact />,
+        loader: contactDetailLoader,
+        action: saveEditedContactAction
       },
       {
         path: 'contacts/:contactId/destroy',
@@ -45,6 +53,10 @@ const router = createBrowserRouter([
   {
     path: '/about',
     element: <About />
+  },
+  {
+    path: '/demo',
+    element: <BootstrapLayoutDemo />
   }
 ])
 

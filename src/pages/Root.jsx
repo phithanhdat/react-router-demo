@@ -1,7 +1,7 @@
 import { Form, Link, Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import { loadContactFromServer } from "../redux/contacts/contactSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getContacts } from "../contactDataSource/datasource";
 
 export const loader = async () => {
@@ -11,17 +11,45 @@ export const loader = async () => {
 
 
 function Root() {
+  const contacts = useSelector(state => state.contacts.value)
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [filteredContact, setFilteredContact] = useState([])
   const dispatch = useDispatch()
 
   useEffect(() => {
       dispatch(loadContactFromServer())
   }, []);
 
+  useEffect(() => {
+    setFilteredContact(contacts)
+  }, [contacts])
+
 
   // const { contacts } = useLoaderData()
 
   const navigate = useNavigate()
-  const contacts = useSelector(state => state.contacts.value)
+
+  const handeSearch = (e) => {
+    const value = e.target.value
+    console.log('keyword: ', value);
+    setSearchKeyword(value)
+  }
+
+  useEffect(() => {
+    if (searchKeyword !== '') {
+      console.log('fileter filteredContact: ', filteredContact);
+      const newList = contacts.filter(e => {
+        const name = e.firstname.toLowerCase() + e.lastname.toLowerCase()
+        return name.includes(searchKeyword.toLowerCase())
+      })
+      console.log('filter: newList: ', newList);
+      setFilteredContact(newList)
+    } else {
+      setFilteredContact(contacts)
+    }
+  }, [searchKeyword])
+
+
   return (
     <>
       <div id='sidebar'>
@@ -34,6 +62,7 @@ function Root() {
               placeholder="Search"
               type="search"
               name="q"
+              onChange={handeSearch}
             />
             <div
               id="search-spinner"
@@ -49,9 +78,9 @@ function Root() {
         </div>
         <nav>
           {
-            contacts ? (
+            filteredContact ? (
               <ul>
-                {contacts.map(contact => (
+                {filteredContact.map(contact => (
                   <li>
                     <Link to={`/contacts/${contact.id}`}>
                       {contact.firstname + ' ' + contact.lastname}

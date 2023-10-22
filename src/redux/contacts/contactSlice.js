@@ -32,6 +32,18 @@ const contactSlice = createSlice({
         deleteContact: (state, action) => {
             const newlist = state.value.filter(e => e.id !== parseInt(action.payload))
             state.value = newlist
+        },
+        editContact: (state, action) => {
+            const editedContact = action.payload
+            console.log('redux: editedContact: ', editedContact);
+            const newlist = state.value.map((e) => {
+                if (e.id === editedContact.id) {
+                    return editedContact
+                }
+                return e
+            })
+            console.log('new List: ', newlist);
+            state.value = newlist
         }
     },
     extraReducers: {
@@ -45,6 +57,6 @@ const contactSlice = createSlice({
     }
 })
 
-export const { loadLocalData, addNewContact, deleteContact } = contactSlice.actions;
+export const { loadLocalData, addNewContact, deleteContact, editContact } = contactSlice.actions;
 
 export default contactSlice.reducer

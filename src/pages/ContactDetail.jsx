@@ -1,4 +1,4 @@
-import { Form, useLoaderData } from "react-router-dom";
+import { Form, useLoaderData, useNavigate } from "react-router-dom";
 import { getContact } from "../contactDataSource/datasource";
 import apiCaller from "../apis/contactApi/contactAPI";
 import store from "../redux/store";
@@ -23,6 +23,7 @@ export const deleteContact = async ({params}) => {
 
 function ContactDetail() {
 
+  const nav = useNavigate()
 
   const contact = useLoaderData()
   return (
@@ -38,12 +39,12 @@ function ContactDetail() {
         <h1>
           {contact.firstname || contact.lastname ? (
             <>
-              {contact.firstname} {contact.firstname}
+              {contact.firstname} {contact.lastname}
             </>
           ) : (
             <i>No Name</i>
           )}{" "}
-          <Favorite contact={contact.isFavorite} />
+          <Favorite contact={contact} />
         </h1>
 
         {contact.twitterLink && (
@@ -60,9 +61,7 @@ function ContactDetail() {
         {contact.note && <p>{contact.note}</p>}
 
         <div>
-          <Form action="edit">
-            <button type="submit">Edit</button>
-          </Form>
+          <button onClick={() => nav('./edit')} type="submit">Edit</button>
           <Form
             method="post"
             action="destroy"
@@ -86,7 +85,7 @@ function ContactDetail() {
 
 function Favorite({ contact }) {
   // yes, this is a `let` for later
-  let favorite = contact.favorite;
+  let favorite = contact.isFavorite;
   return (
     <Form method="post">
       <button
